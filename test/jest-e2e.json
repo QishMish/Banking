@@ -1,0 +1,43 @@
+{
+  "moduleFileExtensions": [
+    "js",
+    "json",
+    "ts"
+  ],
+  "rootDir": ".",
+  "testEnvironment": "node",
+  "testRegex": ".e2e-spec.ts$",
+  "transform": {
+    "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "moduleNameMapper": {
+    "@app/user-lib/(.*)": "<rootDir>/../libs/user-lib/src/$1",
+    "@app/user-lib": "<rootDir>/../libs/user-lib/src",
+    "@app/database/(.*)": "<rootDir>/../libs/database/src/$1",
+    "@app/database": "<rootDir>/../libs/database/src",
+    "@app/user/(.*)": "<rootDir>/../libs/user/src/$1",
+    "@app/user": "<rootDir>/../libs/user/src",
+    "@app/utils/(.*)": "<rootDir>/../libs/utils/src/$1",
+    "@app/utils": "<rootDir>/../libs/utils/src",
+    "@app/auth/(.*)": "<rootDir>/../libs/auth/src/$1",
+    "@app/auth": "<rootDir>/../libs/auth/src",
+    "@app/account/(.*)": "<rootDir>/../libs/account/src/$1",
+    "@app/account": "<rootDir>/../libs/account/src",
+    "@app/transaction/(.*)": "<rootDir>/../libs/transaction/src/$1",
+    "@app/transaction": "<rootDir>/../libs/transaction/src",
+    "@app/logger/(.*)": "<rootDir>/../libs/logger/src/$1",
+    "@app/logger": "<rootDir>/../libs/logger/src",
+    "@app/typeorm/(.*)": "<rootDir>/../libs/typeorm/src/$1",
+    "@app/typeorm": "<rootDir>/../libs/typeorm/src",
+    "@app/common/(.*)": "<rootDir>/../libs/common/src/$1",
+    "@app/common": "<rootDir>/../libs/common/src",
+    "@app/scheduler/(.*)": "<rootDir>/../libs/scheduler/src/$1",
+    "@app/scheduler": "<rootDir>/../libs/scheduler/src",
+    "@app/interest/(.*)": "<rootDir>/../libs/interest/src/$1",
+    "@app/interest": "<rootDir>/../libs/interest/src",
+    "@app/seeder/(.*)": "<rootDir>/../libs/seeder/src/$1",
+    "@app/seeder": "<rootDir>/../libs/seeder/src",
+    "@app/account-transaction/(.*)": "<rootDir>/../libs/account-transaction/src/$1",
+    "@app/account-transaction": "<rootDir>/../libs/account-transaction/src"
+  }
+}

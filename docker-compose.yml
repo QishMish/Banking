@@ -1,0 +1,73 @@
+services:
+  api:
+    build: .
+    volumes:
+      - .:/app
+    environment:
+      ENV: '${ENV}'
+      PORT: '${PORT}'
+      DB_USER: '${DB_USER}'
+      DB_PASWORD: '${DB_PASWORD}'
+      DB_PORT: '${DB_PORT}'
+      DB_HOST: '${DB_HOST}'
+      DB_NAME: '${DB_NAME}'
+      DB_URL: 'postgresql://${DB_NAME}:${DB_PASWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}'
+      JWT_ACCESS_TOKEN_SECRET: '${JWT_ACCESS_TOKEN_SECRET}'
+      JWT_ACCESS_TOKEN_EXPIRATION_TIME: '${JWT_ACCESS_TOKEN_EXPIRATION_TIME}'
+      JWT_REFRESH_TOKEN_SECRET: '${JWT_REFRESH_TOKEN_SECRET}'
+      JWT_REFRESH_TOKEN_EXPIRATION_TIME: '${JWT_REFRESH_TOKEN_EXPIRATION_TIME}'
+    ports:
+      - '${PORT}:${PORT}'
+    networks:
+      - bank
+    depends_on:
+      - db
+  db:
+    image: postgres:14.1-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: '${DB_USER}'
+      POSTGRES_PASSWORD: '${DB_PASWORD}'
+    ports:
+      - '${DB_PORT}:${DB_PORT}'
+    networks:
+      - bank
+    volumes:
+      - db:/var/lib/postgresql/data
+  kibana:
+    image: kibana:7.9.3
+    environment:
+      ELASTICSEARCH_HOSTS: 'http://ecs:9200'
+    ports:
+      - '5601:5601'
+    networks:
+      - bank
+    depends_on:
+      - ecs
+    volumes:
+      - kibana:/var/lib/elasticsearch/data
+  ecs:
+    image: elasticsearch:7.9.3
+    environment:
+      node.name: 'es01'
+      cluster.name: 'es01-cluster'
+      discovery.type: 'single-node'
+      ES_PORT: 9200
+      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
+    mem_limit: 1073741824
+    ports:
+      - '9200:9200'
+    networks:
+      - bank
+    volumes:
+      - ecs:/var/lib/elasticsearch/data
+volumes:
+  db:
+    driver: local
+  ecs:
+    driver: local
+  kibana:
+    driver: local
+networks:
+  bank:
+    driver: bridge

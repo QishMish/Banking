@@ -1,0 +1,1 @@
+export const TRANFER_AMOUNT_LIMIT = 50000;

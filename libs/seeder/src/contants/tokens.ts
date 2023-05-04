@@ -1,0 +1,1 @@
+export const SEEDER_REPOSITORY = Symbol('SEEDER_REPOSITORY');
