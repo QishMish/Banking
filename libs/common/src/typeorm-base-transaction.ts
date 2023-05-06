@@ -19,16 +19,22 @@ export abstract class BaseTransaction<TransactionInput, TransactionOutput> {
     await queryRunner.startTransaction('SERIALIZABLE');
 
     try {
+      for await (const [key, value] of Object.entries(data)) {
+      }
       const result = await this.execute(data, queryRunner.manager);
+
       await queryRunner.commitTransaction();
       this.logger.log(`Transaction succeed.`);
       return result;
     } catch (error) {
       await queryRunner.rollbackTransaction();
+
       this.logger.error(`Transaction failed: ${error}`);
       throw new InternalServerErrorException('Transaction failed', error?.response?.message || error);
     } finally {
-      await queryRunner.release();
+      if (!queryRunner.isReleased) {
+        await queryRunner.release();
+      }
     }
   }
 

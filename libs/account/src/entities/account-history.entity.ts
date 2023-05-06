@@ -1,4 +1,4 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
 
 import { Action, HistoryEntity } from '@app/common';
@@ -19,10 +19,11 @@ class AccountHistoryEntity implements AccountHistoryModel, HistoryEntity {
   public status: AccountStatus;
 
   @ManyToOne(() => AccountEntity, (account) => account.histories)
+  @JoinColumn()
   public account: AccountModel;
 
   @Column({ type: 'enum', enum: Action, default: Action.UPDATED })
-  action: Action;
+  public action: Action;
 
   @Exclude()
   @CreateDateColumn()

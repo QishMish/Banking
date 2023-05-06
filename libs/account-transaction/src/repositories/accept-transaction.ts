@@ -25,7 +25,7 @@ export class AcceptTransaction extends BaseTransaction<ChangeTransactionStatusDa
       return this.acceptTransfer(transaction, manager);
     }
     const destinationAccount = await manager.findOneByOrFail(AccountEntity, {
-      id: transaction.destinationAcc.id
+      id: transaction.destinationAcc as any
     });
 
     switch (transaction.type) {

@@ -6,7 +6,7 @@ import { DeepPartial, GroupedResult } from '@app/common';
 import { Logger } from '@app/logger';
 import { INTEREST_REPOSITORY, InterestRepository } from '@app/interest';
 
-import { AccountModel, AccountParamsRepository, AccountRepository, CreateAccountInput, FindAccounts } from '../interfaces';
+import { AccountHistoryModel, AccountModel, AccountParamsRepository, AccountRepository, CreateAccountInput, FindAccounts } from '../interfaces';
 import { SavingAccountType } from '../types';
 import { ACCOUNT_PARAMS_REPOSITORY, ACCOUNT_REPOSITORY } from '../constants/tokens';
 
@@ -52,6 +52,10 @@ export class AccountService {
 
   public findById(id: number): Promise<AccountModel> {
     return this.accountRepository.findById(id);
+  }
+
+  public findAccountHistory(id: number): Promise<AccountModel> {
+    return this.accountRepository.findAccountHistory(id);
   }
 
   public async softDeleteById(id: number): Promise<boolean> {

@@ -96,6 +96,14 @@ export class AccountTypeOrmRepository implements AccountRepository {
     });
   }
 
+  public findAccountHistory(id: number): Promise<AccountEntity> {
+    return this.accountRepository
+      .createQueryBuilder('accounts')
+      .leftJoinAndMapMany('accounts.histories', 'accounts.histories', 'histories')
+      .where('accounts.id = :id', { id })
+      .getOne();
+  }
+
   public findGroupedUserAccounts(userId: number): Promise<GroupedResult<AccountEntity>[]> {
     return this.accountRepository
       .createQueryBuilder('account')

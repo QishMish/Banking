@@ -98,6 +98,15 @@ export class AdminController {
     return this.accountService.findById(id);
   }
 
+  @Get('/account/:id/history')
+  @Throttle(20, 60)
+  @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
+  @HttpCode(HttpStatus.OK)
+  public findAccountHistory(@Param('id', ParseIntPipe) id: number): Promise<AccountModel> {
+    return this.accountService.findAccountHistory(id);
+  }
+
   @Get('/transactions')
   @Throttle(20, 60)
   @Roles(Role.ADMIN)

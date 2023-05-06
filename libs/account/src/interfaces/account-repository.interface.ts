@@ -10,6 +10,7 @@ interface AccountRepositoryExtension {
   findGroupedUserAccounts(userId: number): Promise<GroupedResult<AccountEntity>[]>;
   findAll(findOptions: FindAccounts): Promise<PaginationResult<AccountEntity>>;
   getSavingAccounts(type: SavingAccountType): Promise<AccountEntity[]>;
+  findAccountHistory(id: number): Promise<AccountEntity>
 }
 
 type AccountRepository = BaseRepository<AccountEntity> & AccountRepositoryExtension;

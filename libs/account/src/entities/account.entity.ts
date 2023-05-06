@@ -60,7 +60,7 @@ class AccountEntity implements AccountModel {
   })
   public incomingTransactions: TransactionModel[];
 
-  @OneToMany(() => AccountHistoryEntity, (histories) => histories)
+  @OneToMany(() => AccountHistoryEntity, (histories) => histories.account)
   public histories: AccountHistoryModel[];
 
   @Exclude()

@@ -1,3 +1,4 @@
 export * from './account-transaction.module';
-export * from './services/account-transaction.service';
+export * from './services';
 export * from './interfaces';
+export * from './repositories';
