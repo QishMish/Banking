@@ -1,7 +1,7 @@
 enum TransactionStatus {
   ACCEPTED = 'ACCEPTED',
   DECLINED = 'DECLINED',
-  PENDING = 'PENDING',
+  PENDING = 'PENDING'
 }
 
 export { TransactionStatus };

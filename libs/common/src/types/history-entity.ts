@@ -1,6 +1,6 @@
 enum Action {
   CREATED = 'CREATED',
   UPDATED = 'UPDATED',
-  DELETED = 'DELETED',
+  DELETED = 'DELETED'
 }
 export { Action };

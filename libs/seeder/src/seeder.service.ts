@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
-import { InterestRateSeederService } from './interestRates/interestRate.service';
+
 import { Logger } from '@app/logger';
+
+import { InterestRateSeederService } from './interestRates/interestRate.service';
 
 @Injectable()
 export class SeederService {
-  constructor(
-    private readonly interestRatesSeederService: InterestRateSeederService,
-    private readonly logger: Logger,
-  ) {}
+  constructor(private readonly interestRatesSeederService: InterestRateSeederService, private readonly logger: Logger) {}
   public async seed(): Promise<void> {
     await this.interestRates()
       .then((completed) => {

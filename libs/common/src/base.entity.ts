@@ -1,10 +1,5 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, PrimaryColumn, UpdateDateColumn } from 'typeorm';
+
 import { BaseEntityInterface } from './interfaces';
 
 abstract class BaseEntity implements BaseEntityInterface {

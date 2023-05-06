@@ -1,6 +1,6 @@
 enum TransactionPurpose {
   PERSONAL = 'PERSONAL',
-  OTHER = 'OTHER',
+  OTHER = 'OTHER'
 }
 
 export { TransactionPurpose };

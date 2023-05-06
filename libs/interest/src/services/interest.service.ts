@@ -1,23 +1,23 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+
+import { FindOptions } from '@app/common';
+
 import { INTEREST_REPOSITORY } from '../constants';
 import { Interest, InterestRepository } from '../interfaces';
 import { InterestEntity } from '../entities';
-import { FindOptions } from '@app/common';
 
 @Injectable()
 export class InterestService {
   constructor(
     @Inject(INTEREST_REPOSITORY)
-    private readonly interestRepository: InterestRepository,
+    private readonly interestRepository: InterestRepository
   ) {}
 
   public create(user: Interest): Promise<InterestEntity> {
     return this.interestRepository.create(user);
   }
 
-  public find(
-    findOptions?: Partial<InterestEntity>,
-  ): Promise<InterestEntity[] | []> {
+  public find(findOptions?: Partial<InterestEntity>): Promise<InterestEntity[] | []> {
     return this.interestRepository.find(findOptions);
   }
 
@@ -28,9 +28,7 @@ export class InterestService {
     return user;
   }
 
-  public async findOne(
-    findOptions: FindOptions<InterestEntity>,
-  ): Promise<InterestEntity | never> {
+  public async findOne(findOptions: FindOptions<InterestEntity>): Promise<InterestEntity | never> {
     const user = await this.interestRepository.findOne(findOptions);
 
     if (!user) throw new NotFoundException('User not found');
@@ -41,10 +39,7 @@ export class InterestService {
     return this.interestRepository.getInterestRate(amount, month);
   }
 
-  public updateById(
-    id: number,
-    user: Partial<InterestEntity>,
-  ): Promise<InterestEntity> {
+  public updateById(id: number, user: Partial<InterestEntity>): Promise<InterestEntity> {
     return this.interestRepository.updateById(id, user);
   }
 

@@ -1,7 +1,7 @@
 export enum LoggingProvider {
   PINO = 'PINO',
   MORGAN = 'MORGAN',
-  WINSTON = 'WINSTON',
+  WINSTON = 'WINSTON'
 }
 
 export enum LogLevel {
@@ -10,5 +10,5 @@ export enum LogLevel {
   INFO = 'info',
   WARN = 'warn',
   ERROR = 'error',
-  FATAL = 'fatal',
+  FATAL = 'fatal'
 }

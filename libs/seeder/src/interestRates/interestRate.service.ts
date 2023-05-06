@@ -1,13 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
+
 import { interestRates } from './data';
-import { SEEDER_REPOSITORY } from '../contants';
+import { SEEDER_REPOSITORY } from '../constants';
 import { SeederRepository } from '../interfaces';
 
 @Injectable()
 export class InterestRateSeederService {
   constructor(
     @Inject(SEEDER_REPOSITORY)
-    private readonly interestRateSeederRepository: SeederRepository,
+    private readonly interestRateSeederRepository: SeederRepository
   ) {}
 
   public bulkCreate() {

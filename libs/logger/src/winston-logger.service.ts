@@ -1,30 +1,13 @@
 import { Injectable } from '@nestjs/common';
-import {
-  createLogger,
-  format,
-  transports,
-  Logger as WinstonLogger,
-} from 'winston';
-import { ElasticsearchTransport } from 'winston-elasticsearch';
+import { createLogger, format, transports, Logger as WinstonLogger } from 'winston';
+
 import { LogLevelOptions } from './types';
 import { Logger } from './interfaces';
-
 @Injectable()
 export class WinstonLoggerService implements Logger {
   private logger: WinstonLogger;
   private level: string;
-  private esTransportOpts = {
-    level: 'info',
-    indexPrefix: 'logs',
-    indexSuffixPattern: 'YYYY-MM-DD',
-    clientOpts: {
-      node: 'http://localhost:9200',
-      maxRetries: 5,
-      requestTimeout: 10000,
-      sniffOnStart: false,
-    },
-    source: process.env.LOG_SOURCE || 'api',
-  };
+  // private logtail = new Logtail('imkzdZP5M5RG786FJRjr5xYt');
 
   constructor({ level, serviceName }: LogLevelOptions) {
     this.level = level;
@@ -35,10 +18,10 @@ export class WinstonLoggerService implements Logger {
       defaultMeta: { service: serviceName },
       transports: [
         new transports.Console({
-          format: format.simple(),
-        }),
-        new ElasticsearchTransport(this.esTransportOpts),
-      ],
+          format: format.simple()
+        })
+        // new LogtailTransport(this.logtail)
+      ]
     });
   }
 

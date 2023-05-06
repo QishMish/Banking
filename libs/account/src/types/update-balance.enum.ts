@@ -1,6 +1,6 @@
 enum UpdateBalance {
   DEPOSIT = 'DEPOSIT',
-  WITHDRAWAL = 'WITHDRAWAL',
+  WITHDRAWAL = 'WITHDRAWAL'
 }
 
 export { UpdateBalance };

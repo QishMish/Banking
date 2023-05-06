@@ -1,6 +1,6 @@
 enum SavingAccountStatus {
   OPEN = 'OPEN',
-  CLOSED = 'CLOSED',
+  CLOSED = 'CLOSED'
 }
 
 export { SavingAccountStatus };

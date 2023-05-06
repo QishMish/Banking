@@ -1,6 +1,7 @@
-import { Module } from '@nestjs/common';
-import { SeederService } from './seeder.service';
-import { InterestRateSeederModule } from './interestRates';
+import { Module } from "@nestjs/common";
+
+import { SeederService } from "./seeder.service";
+import { InterestRateSeederModule } from "./interestRates";
 
 @Module({
   imports: [InterestRateSeederModule],

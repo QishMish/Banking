@@ -4,14 +4,14 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  JoinTable,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
+
 import { AccountEntity, AccountModel } from '@app/account';
 import { UserEntity, UserModel } from '@app/user';
+
 import { TransactionType, TransactionStatus } from '../types';
 import { TransactionModel } from '../interfaces';
 
@@ -33,7 +33,7 @@ class TransactionEntity implements TransactionModel {
   public user: UserModel;
 
   @ManyToOne('AccountEntity', {
-    nullable: true,
+    nullable: true
   })
   public sourceAcc?: AccountModel;
 

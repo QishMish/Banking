@@ -7,18 +7,12 @@ import { Reflector } from '@nestjs/core';
 export class RolesGuard implements CanActivate {
   constructor(private readonly reflector: Reflector) {}
 
-  canActivate(
-    context: ExecutionContext,
-  ): boolean | Promise<boolean> | Observable<boolean> {
-    const requiredRoles: Role[] = this.reflector.getAllAndOverride('roles', [
-      context.getHandler(),
-      context.getClass(),
-    ]);
+  canActivate(context: ExecutionContext): boolean | Promise<boolean> | Observable<boolean> {
+    const requiredRoles: Role[] = this.reflector.getAllAndOverride('roles', [context.getHandler(), context.getClass()]);
     if (!requiredRoles) return true;
 
     const { user } = context.switchToHttp().getRequest();
 
-    console.log(user);
     return requiredRoles.some((role) => user.role === role);
   }
 }

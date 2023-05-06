@@ -1,1 +1,1 @@
-export * from './seeder.repository.interface';
+export * from "./seeder.repository.interface";

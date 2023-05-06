@@ -1,18 +1,11 @@
-import { BasePaginationDto } from '@app/common';
-import {
-  Transaction,
-  TransactionType,
-  TransactionStatus,
-  FindTransactions,
-} from '@app/transaction';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsNumber, IsOptional } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform } from 'class-transformer';
 
-class FindTransactionsQuery
-  extends BasePaginationDto
-  implements FindTransactions
-{
+import { BasePaginationDto } from '@app/common';
+import { TransactionType, TransactionStatus, FindTransactions } from '@app/transaction';
+
+class FindTransactionsQuery extends BasePaginationDto implements FindTransactions {
   @ApiProperty({ required: false })
   @IsNumber()
   @Transform(({ value }) => parseInt(value))

@@ -1,5 +1,5 @@
-import { DeepPartial } from '../types';
-import { BaseEntityInterface } from './base-entity.interface';
+import { DeepPartial } from "../types";
+import { BaseEntityInterface } from "./base-entity.interface";
 
 export interface BaseRepository<T extends BaseEntityInterface> {
   create(entity: unknown): Promise<T>;

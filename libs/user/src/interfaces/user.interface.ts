@@ -1,7 +1,9 @@
 import { TransactionModel } from '@app/transaction';
+
 import { BaseEntityInterface } from '@app/common';
 import { PaginationProps } from '@app/utils';
 import { AccountModel } from '@app/account';
+
 import { Role, UserStatuses } from '../types';
 
 interface FindUsers extends PaginationProps {

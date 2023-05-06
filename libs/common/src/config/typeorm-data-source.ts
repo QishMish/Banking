@@ -8,12 +8,12 @@ export const dataSourceOptions: DataSourceOptions & SeederOptions = {
   username: process.env.DB_USER,
   password: process.env.DB_PASWORD,
   database: process.env.DB_NAME,
-  logging: process.env.ENV === 'development' ? true : false,
+  // logging: process.env.ENV === 'development' ? true : false,
   // dropSchema: true,
-  // synchronize: true,
+  synchronize: true,
   migrationsRun: false,
   entities: ['dist/**/*.entity.js'],
-  migrations: ['dist/migrations/*.js'],
+  migrations: ['dist/migrations/*.js']
 };
 
 export default new DataSource(dataSourceOptions);

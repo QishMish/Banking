@@ -1,5 +1,5 @@
-import { SignUpUser } from '@app/auth/interfaces';
-import { Type } from 'class-transformer';
+import { SignUpUser } from "@app/auth/interfaces";
+import { Type } from "class-transformer";
 import {
   IsDate,
   IsEmail,
@@ -8,8 +8,8 @@ import {
   IsString,
   MaxLength,
   MinLength,
-} from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+} from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
 
 class SignUpDto implements SignUpUser {
   @IsString()

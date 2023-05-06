@@ -1,7 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
+
 import { PaginationResult } from '@app/utils';
+
 import { FindUsers, UserRepository } from '../interfaces';
 import { UserEntity } from '../entities';
 
@@ -9,24 +11,20 @@ import { UserEntity } from '../entities';
 export class UserTypeOrmRepository implements UserRepository {
   constructor(
     @InjectRepository(UserEntity)
-    private readonly userRepository: Repository<UserEntity>,
+    private readonly userRepository: Repository<UserEntity>
   ) {}
 
   public create(entity: unknown): Promise<UserEntity> {
     return this.userRepository.save(entity as UserEntity);
   }
 
-  public find(
-    findManyOptions: Partial<UserEntity>,
-  ): Promise<[] | UserEntity[]> {
+  public find(findManyOptions: Partial<UserEntity>): Promise<[] | UserEntity[]> {
     return this.userRepository.find({
-      where: findManyOptions,
+      where: findManyOptions
     });
   }
 
-  public async findAll(
-    options: FindUsers,
-  ): Promise<PaginationResult<UserEntity>> {
+  public async findAll(options: FindUsers): Promise<PaginationResult<UserEntity>> {
     const { id, page, pageSize, skip, limit, ...whereOptions } = options;
 
     const queryBuilder = this.userRepository.createQueryBuilder('users');
@@ -40,55 +38,44 @@ export class UserTypeOrmRepository implements UserRepository {
     for (const [key, value] of Object.entries(whereOptions)) {
       if (value !== undefined) {
         queryBuilder.andWhere(`users.${key} = :${key}`, {
-          [key]: value,
+          [key]: value
         });
       }
     }
 
-    const [users, count] = await queryBuilder
-      .orderBy('users.createdAt', 'DESC')
-      .skip(skip)
-      .take(limit)
-      .getManyAndCount();
+    const [users, count] = await queryBuilder.orderBy('users.createdAt', 'DESC').skip(skip).take(limit).getManyAndCount();
 
     return {
       page,
       pageSize,
       total: count,
       totalPages: count,
-      data: users,
+      data: users
     };
   }
 
   public findById(id: number): Promise<UserEntity> {
     return this.userRepository.findOne({
-      where: { id },
+      where: { id }
     });
   }
 
   public findOne(findOptions: Partial<UserEntity>): Promise<UserEntity> {
     return this.userRepository.findOne({
-      where: findOptions,
+      where: findOptions
     });
   }
 
-  public async updateById(
-    id: number,
-    entity: Partial<UserEntity>,
-  ): Promise<UserEntity> {
+  public async updateById(id: number, entity: Partial<UserEntity>): Promise<UserEntity> {
     await this.userRepository.update({ id }, entity);
     return this.findById(id);
   }
 
   public deleteById(id: number): Promise<boolean> {
-    return this.userRepository
-      .delete({ id })
-      .then((result) => !!result.affected);
+    return this.userRepository.delete({ id }).then((result) => !!result.affected);
   }
 
   public softDeleteById(id: number): Promise<boolean> {
-    return this.userRepository
-      .softDelete({ id })
-      .then((result) => !!result.affected);
+    return this.userRepository.softDelete({ id }).then((result) => !!result.affected);
   }
 }

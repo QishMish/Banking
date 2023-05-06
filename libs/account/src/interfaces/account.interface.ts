@@ -3,6 +3,7 @@ import { TransactionPurpose, TransactionType } from '@app/transaction';
 import { TransactionModel } from '@app/transaction';
 import { BaseEntityInterface } from '@app/common';
 import { PaginationProps } from '@app/utils';
+
 import { AccountStatus, AccountTypeEnum } from '../types';
 import { AccountParams, AccountParamsModel } from './account-params.interface';
 
@@ -47,10 +48,4 @@ interface AccountModel extends Account, BaseEntityInterface {
   params?: AccountParamsModel;
 }
 
-export {
-  Account,
-  AccountModel,
-  CreateAccountInput,
-  TransferMoneyInput,
-  FindAccounts,
-};
+export { Account, AccountModel, CreateAccountInput, TransferMoneyInput, FindAccounts };

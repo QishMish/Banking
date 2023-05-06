@@ -1,7 +1,8 @@
-import { TransferMoneyInput } from '@app/account';
-import { TransactionPurpose, TransactionType } from '@app/transaction';
-import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+
+import { TransactionPurpose, TransactionType } from '@app/transaction';
+import { TransferMoneyInput } from '@app/account';
 
 class TransferMoneyDto implements Omit<TransferMoneyInput, 'userId'> {
   @IsString()

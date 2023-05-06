@@ -1,1 +1,1 @@
-export * from '../interfaces/interest-typeorm-repository';
+export * from './interest-typeorm.repository';

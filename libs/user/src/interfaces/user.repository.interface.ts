@@ -1,7 +1,9 @@
 import { BaseRepository } from '@app/common';
+
+import { PaginationResult } from '@app/utils';
+
 import { UserEntity } from '../entities';
 import { FindUsers } from './user.interface';
-import { PaginationResult } from '@app/utils';
 
 interface findUserRepositoryExtension {
   findAll(options: FindUsers): Promise<PaginationResult<UserEntity>>;

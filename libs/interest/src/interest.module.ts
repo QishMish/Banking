@@ -1,10 +1,12 @@
 import { Module } from '@nestjs/common';
-import { InterestService } from './services/interest.service';
-import { INTEREST_REPOSITORY } from './constants';
-import { InterestTypeOrmRepository } from './repositories/interest-typeorm.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { SEEDER_REPOSITORY } from '@app/seeder/constants';
+
+import { INTEREST_REPOSITORY } from './constants';
+import { InterestTypeOrmRepository } from './repositories';
 import { InterestEntity } from './entities';
-import { SEEDER_REPOSITORY } from '@app/seeder/contants';
+import { InterestService } from './services/interest.service';
 
 @Module({
   imports: [TypeOrmModule.forFeature([InterestEntity])],
@@ -12,13 +14,13 @@ import { SEEDER_REPOSITORY } from '@app/seeder/contants';
     InterestService,
     {
       provide: INTEREST_REPOSITORY,
-      useClass: InterestTypeOrmRepository,
+      useClass: InterestTypeOrmRepository
     },
     {
       provide: SEEDER_REPOSITORY,
-      useClass: InterestTypeOrmRepository,
-    },
+      useClass: InterestTypeOrmRepository
+    }
   ],
-  exports: [InterestService, INTEREST_REPOSITORY, SEEDER_REPOSITORY],
+  exports: [InterestService, INTEREST_REPOSITORY, SEEDER_REPOSITORY]
 })
 export class InterestModule {}

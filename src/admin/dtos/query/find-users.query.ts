@@ -1,9 +1,11 @@
-import { BasePaginationDto } from '@app/common';
-import { TransactionStatus } from '@app/transaction';
-import { IsEmail, IsEnum, IsNumber, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
-import { Transform } from 'class-transformer';
-import { FindUsers, Role, UserStatuses } from '@app/user';
+import { Transform } from "class-transformer";
+import { ApiProperty } from "@nestjs/swagger";
+import { IsEmail, IsEnum, IsNumber, IsOptional } from "class-validator";
+
+import { BasePaginationDto } from "@app/common";
+import { TransactionStatus } from "@app/transaction";
+import { FindUsers, Role, UserStatuses } from "@app/user";
+
 
 class FindUsersQuery extends BasePaginationDto implements FindUsers {
   @ApiProperty({ required: false })

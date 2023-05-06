@@ -9,15 +9,13 @@ import {
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
+  UpdateDateColumn
 } from 'typeorm';
+
 import { UserEntity, UserModel } from '@app/user';
 import { TransactionEntity, TransactionModel } from '@app/transaction';
-import {
-  AccountHistoryModel,
-  AccountModel,
-  AccountParamsModel,
-} from '../interfaces';
+
+import { AccountHistoryModel, AccountModel, AccountParamsModel } from '../interfaces';
 import { AccountStatus, AccountTypeEnum } from '../types';
 import { AccountParamsEntity } from './account-params.entity';
 import { AccountHistoryEntity } from './account-history.entity';
@@ -39,7 +37,7 @@ class AccountEntity implements AccountModel {
   @Column({
     type: 'enum',
     enum: AccountTypeEnum,
-    nullable: false,
+    nullable: false
   })
   public type: AccountTypeEnum;
 
@@ -51,19 +49,15 @@ class AccountEntity implements AccountModel {
   public params?: AccountParamsModel;
 
   @OneToMany(() => TransactionEntity, (transaction) => transaction.sourceAcc, {
-    eager: true,
+    eager: true
   })
   public outgoingTransactions: TransactionModel[];
 
-  @OneToMany(
-    () => TransactionEntity,
-    (transaction) => transaction.destinationAcc,
-    {
-      createForeignKeyConstraints: true,
-      cascade: true,
-      eager: true,
-    },
-  )
+  @OneToMany(() => TransactionEntity, (transaction) => transaction.destinationAcc, {
+    createForeignKeyConstraints: true,
+    cascade: true,
+    eager: true
+  })
   public incomingTransactions: TransactionModel[];
 
   @OneToMany(() => AccountHistoryEntity, (histories) => histories)

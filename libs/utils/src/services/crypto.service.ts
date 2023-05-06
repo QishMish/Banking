@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { genSalt, hash, compare } from 'bcrypt';
+import { Injectable } from "@nestjs/common";
+import { genSalt, hash, compare } from "bcrypt";
 
 @Injectable()
 export class CryptoService {
   public async hash(
     value: string | Buffer,
-    saltRounds?: string | number,
+    saltRounds?: string | number
   ): Promise<string> {
     const salt = saltRounds || (await genSalt(8));
     return hash(value, salt);
@@ -13,7 +13,7 @@ export class CryptoService {
 
   public async compareHashs(
     value: string | Buffer,
-    encryptedValue: string,
+    encryptedValue: string
   ): Promise<boolean> {
     return compare(value, encryptedValue);
   }

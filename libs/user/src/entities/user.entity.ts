@@ -1,15 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import { AccountModel } from '@app/account/interfaces';
+
+import { AccountModel } from '@app/account';
 import { TransactionEntity, TransactionModel } from '@app/transaction';
+
 import { Role, UserStatuses } from '../types';
 import { UserModel } from '../interfaces/user.interface';
 

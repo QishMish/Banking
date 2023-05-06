@@ -1,11 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { PaginationProps, PaginationResult, QueryResult } from '../types';
+import { Injectable } from "@nestjs/common";
+import { PaginationProps, PaginationResult, QueryResult } from "../types";
 
 @Injectable()
 export class PaginationService {
   public paginate<T>(
     queryResult: QueryResult<T>,
-    options: PaginationProps,
+    options: PaginationProps
   ): PaginationResult<T> {
     const { data, total } = queryResult;
     const { page, pageSize } = options;

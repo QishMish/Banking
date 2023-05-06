@@ -1,14 +1,11 @@
-import { Injectable } from '@nestjs/common';
-import { DataSource } from 'typeorm';
-import { DbTransactionServiceInterface } from './interfaces';
+import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { DataSource, EntityManager } from 'typeorm';
 
 @Injectable()
-export class DbTransactionService implements DbTransactionServiceInterface {
+export class DbTransactionService {
   constructor(private dataSource: DataSource) {}
 
-  async executeTransaction<T>(
-    callback: (entityManager) => Promise<T>,
-  ): Promise<T> {
+  async executeTransaction<T>(callback: (transactionManager: any) => Promise<T>): Promise<T> {
     const queryRunner = this.dataSource.createQueryRunner();
 
     await queryRunner.connect();
@@ -21,7 +18,7 @@ export class DbTransactionService implements DbTransactionServiceInterface {
       return result;
     } catch (error) {
       await queryRunner.rollbackTransaction();
-      throw error;
+      throw new InternalServerErrorException('Transaction failed', error);
     } finally {
       await queryRunner.release();
     }

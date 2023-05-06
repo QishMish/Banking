@@ -34,39 +34,8 @@ services:
       - bank
     volumes:
       - db:/var/lib/postgresql/data
-  kibana:
-    image: kibana:7.9.3
-    environment:
-      ELASTICSEARCH_HOSTS: 'http://ecs:9200'
-    ports:
-      - '5601:5601'
-    networks:
-      - bank
-    depends_on:
-      - ecs
-    volumes:
-      - kibana:/var/lib/elasticsearch/data
-  ecs:
-    image: elasticsearch:7.9.3
-    environment:
-      node.name: 'es01'
-      cluster.name: 'es01-cluster'
-      discovery.type: 'single-node'
-      ES_PORT: 9200
-      ES_JAVA_OPTS: '-Xms512m -Xmx512m'
-    mem_limit: 1073741824
-    ports:
-      - '9200:9200'
-    networks:
-      - bank
-    volumes:
-      - ecs:/var/lib/elasticsearch/data
 volumes:
   db:
-    driver: local
-  ecs:
-    driver: local
-  kibana:
     driver: local
 networks:
   bank:

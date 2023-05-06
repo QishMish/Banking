@@ -1,2 +1,2 @@
-export * from './builder.type';
-export * from './pagination.types';
+export * from "./builder.type";
+export * from "./pagination.types";

@@ -1,4 +1,4 @@
-import { Action } from '../types';
+import { Action } from "../types";
 
 interface HistoryEntity {
   action: Action;

@@ -1,17 +1,11 @@
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
 import { Exclude } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+
+import { Action, HistoryEntity } from '@app/common';
+
 import { AccountHistoryModel, AccountModel } from '../interfaces';
 import { AccountStatus } from '../types';
 import { AccountEntity } from './account.entity';
-import { Action, HistoryEntity } from '@app/common';
 
 @Entity({ name: 'accountHistories', schema: 'public' })
 class AccountHistoryEntity implements AccountHistoryModel, HistoryEntity {

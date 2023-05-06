@@ -5,7 +5,6 @@ interface InterestRepositoryExtension {
   getInterestRate(amount: number, month: number): Promise<number>;
 }
 
-type InterestRepository = BaseRepository<InterestEntity> &
-  InterestRepositoryExtension;
+type InterestRepository = BaseRepository<InterestEntity> & InterestRepositoryExtension;
 
 export { InterestRepository };

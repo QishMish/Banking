@@ -1,4 +1,5 @@
 import { DynamicModule, Global, Module, Provider } from '@nestjs/common';
+
 import { LoggerOptions, LoggingProvider } from './types';
 import { WinstonLoggerService } from './winston-logger.service';
 import { Logger } from './interfaces';
@@ -11,7 +12,7 @@ export class LoggerModule {
       global: true,
       module: LoggerModule,
       providers: [loggerProvider],
-      exports: [loggerProvider],
+      exports: [loggerProvider]
     };
   }
   private static createLoggerProvider(options: LoggerOptions): Provider {
@@ -21,7 +22,7 @@ export class LoggerModule {
           provide: Logger,
           useFactory: () => {
             return new WinstonLoggerService(options);
-          },
+          }
         };
       default:
         throw new Error(`Provide correct logger provider: ${options.engine}`);

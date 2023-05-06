@@ -1,4 +1,5 @@
 import { BaseEntityInterface } from '@app/common';
+
 import { SavingAccountStatus, SavingAccountType } from '../types';
 
 interface AccountParams {

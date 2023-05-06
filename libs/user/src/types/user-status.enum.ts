@@ -3,7 +3,7 @@ enum UserStatuses {
   INACTIVE = 'INACTIVE',
   PENDING = 'PENDING',
   SUSPENDED = 'SUSPENDED',
-  DELETED = 'DELETED',
+  DELETED = 'DELETED'
 }
 
 export { UserStatuses };

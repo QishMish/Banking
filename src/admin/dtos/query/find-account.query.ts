@@ -1,13 +1,9 @@
-import {
-  Account,
-  AccountStatus,
-  AccountTypeEnum,
-  FindAccounts,
-} from '@app/account';
-import { BasePaginationDto } from '@app/common';
-import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsNumber, IsOptional, IsString } from 'class-validator';
 import { Transform, Type } from 'class-transformer';
+
+import { BasePaginationDto } from '@app/common';
+import { AccountStatus, AccountTypeEnum, FindAccounts } from '@app/account';
 
 class FindAccountQuery extends BasePaginationDto implements FindAccounts {
   @IsNumber()

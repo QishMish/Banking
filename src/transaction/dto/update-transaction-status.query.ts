@@ -1,6 +1,7 @@
-import { TransactionStatus } from '@app/transaction';
-import { IsEnum, IsOptional } from 'class-validator';
-import { ApiProperty } from '@nestjs/swagger';
+import { IsEnum, IsOptional } from "class-validator";
+import { ApiProperty } from "@nestjs/swagger";
+
+import { TransactionStatus } from "@app/transaction";
 
 class UpdateTransactionStatusDto {
   @IsEnum(TransactionStatus)

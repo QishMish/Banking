@@ -1,18 +1,10 @@
-import {
-  BadGatewayException,
-  BadRequestException,
-  Injectable,
-  InternalServerErrorException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { BadGatewayException, BadRequestException, Injectable, InternalServerErrorException, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+
 import { UserModel, UserService } from '@app/user';
 import { CryptoService, JwtLibService } from '@app/utils';
-import {
-  AuthTokenWithCookiesResponse,
-  JWTAuthPayload,
-  SignUpUser,
-} from './interfaces';
+
+import { AuthTokenWithCookiesResponse, JWTAuthPayload, SignUpUser } from './interfaces';
 
 @Injectable()
 export class AuthService {
@@ -20,18 +12,13 @@ export class AuthService {
     private readonly userService: UserService,
     private readonly jwtService: JwtLibService,
     private readonly cryptoService: CryptoService,
-    private readonly configService: ConfigService,
+    private readonly configService: ConfigService
   ) {}
 
   public async signUpUser(user: SignUpUser): Promise<UserModel> {
-    const emailIsAvailable = await this.userService.checkEmailAvailability(
-      user.email,
-    );
+    const emailIsAvailable = await this.userService.checkEmailAvailability(user.email);
 
-    if (!emailIsAvailable)
-      throw new BadRequestException(
-        'User with corresponding email already exist',
-      );
+    if (!emailIsAvailable) throw new BadRequestException('User with corresponding email already exist');
 
     this.validateConfirmPassword(user.password, user.confirmPassword);
 
@@ -40,7 +27,7 @@ export class AuthService {
     try {
       const newUser = await this.userService.create({
         ...user,
-        password: hashedPassword,
+        password: hashedPassword
       });
 
       return newUser;
@@ -48,15 +35,13 @@ export class AuthService {
       if (error?.code === '23505') {
         throw new BadRequestException('User with that email already exists');
       }
-      throw new InternalServerErrorException(
-        'Something went wrong during signing up',
-      );
+      throw new InternalServerErrorException('Something went wrong during signing up');
     }
   }
 
   public async findUser(email: string, password: string): Promise<UserModel> {
     const user = await this.userService.findOne({
-      email,
+      email
     });
 
     if (!user) {
@@ -68,47 +53,33 @@ export class AuthService {
     return user;
   }
 
-  public async generateJwtAccesTokenCookie(
-    payload: JWTAuthPayload,
-  ): Promise<AuthTokenWithCookiesResponse> {
+  public async generateJwtAccesTokenCookie(payload: JWTAuthPayload): Promise<AuthTokenWithCookiesResponse> {
     const accesstoken = await this.jwtService.signJwtAccessToken(payload);
 
-    const cookie = `AccessToken=${accesstoken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_ACCESS_TOKEN_EXPIRATION_TIME',
-    )}`;
+    const cookie = `AccessToken=${accesstoken}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_ACCESS_TOKEN_EXPIRATION_TIME')}`;
 
     return {
       cookie,
-      token: accesstoken,
+      token: accesstoken
     };
   }
 
-  public async generateJwtRefreshTokenCookie(
-    payload: JWTAuthPayload,
-  ): Promise<AuthTokenWithCookiesResponse> {
+  public async generateJwtRefreshTokenCookie(payload: JWTAuthPayload): Promise<AuthTokenWithCookiesResponse> {
     const refreshToken = await this.jwtService.signJwtRefreshToken(payload);
 
-    const cookie = `RefreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.configService.get(
-      'JWT_REFRESH_TOKEN_EXPIRATION_TIME',
-    )}`;
+    const cookie = `RefreshToken=${refreshToken}; HttpOnly; Path=/; Max-Age=${this.configService.get('JWT_REFRESH_TOKEN_EXPIRATION_TIME')}`;
 
     return {
       cookie,
-      token: refreshToken,
+      token: refreshToken
     };
   }
 
   public generateLogOutCookie(): string[] {
-    return [
-      'AccessToken=; HttpOnly; Max-Age=0',
-      'RefreshToken=; HttpOnly; Max-Age=0',
-    ];
+    return ['AccessToken=; HttpOnly; Max-Age=0', 'RefreshToken=; HttpOnly; Max-Age=0'];
   }
 
-  public async setRefreshToken(
-    userId: number,
-    refreshToken: string,
-  ): Promise<boolean | UserModel> {
+  public async setRefreshToken(userId: number, refreshToken: string): Promise<boolean | UserModel> {
     return this.userService.setRefreshToken(userId, refreshToken);
   }
 
@@ -116,27 +87,19 @@ export class AuthService {
     return this.userService.removeRefreshToken(userId);
   }
 
-  private validateConfirmPassword(
-    password: string,
-    confirmPassword: string,
-  ): void | never {
+  private validateConfirmPassword(password: string, confirmPassword: string): void | never {
     if (password !== confirmPassword)
       throw new BadGatewayException({
-        message: 'Passwords does not match',
+        message: 'Passwords does not match'
       });
   }
 
-  private validatePassword(
-    password: string,
-    hashedPassword: string,
-  ): Promise<boolean> {
-    return this.cryptoService
-      .compareHashs(password, hashedPassword)
-      .then((result) => {
-        if (result) {
-          return true;
-        }
-        throw new UnauthorizedException();
-      });
+  private validatePassword(password: string, hashedPassword: string): Promise<boolean> {
+    return this.cryptoService.compareHashs(password, hashedPassword).then((result) => {
+      if (result) {
+        return true;
+      }
+      throw new UnauthorizedException();
+    });
   }
 }

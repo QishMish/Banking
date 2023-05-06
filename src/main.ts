@@ -1,9 +1,11 @@
+import * as cookieParser from 'cookie-parser';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as cookieParser from 'cookie-parser';
-import { AppModule } from './app.module';
+
 import { Logger } from '@app/logger';
 import { SeederService } from '@app/seeder';
+
+import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -15,7 +17,6 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  
   app.enableCors();
 
   app.getHttpAdapter().getInstance().disable('x-powered-by');

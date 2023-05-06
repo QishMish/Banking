@@ -1,4 +1,4 @@
-import { Interest } from '@app/interest';
+import { Interest } from "@app/interest";
 
 const interestRates: Array<Interest & { id: number }> = [
   { id: 1, minMonth: 0, maxMonth: 6, minAmount: 0, maxAmount: 1000, rate: 0.1 },

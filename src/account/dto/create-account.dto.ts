@@ -1,19 +1,9 @@
-import {
-  AccountTypeEnum,
-  CreateAccountInput,
-  SavingAccountType,
-} from '@app/account';
-import { AccountParams } from '@app/account';
 import { Type } from 'class-transformer';
-import {
-  IsEnum,
-  IsNotEmpty,
-  IsNotEmptyObject,
-  IsNumber,
-  ValidateIf,
-  ValidateNested,
-} from 'class-validator';
+import { IsEnum, IsNotEmpty, IsNotEmptyObject, IsNumber, ValidateIf, ValidateNested } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
+
+import { AccountParams } from '@app/account';
+import { AccountTypeEnum, CreateAccountInput, SavingAccountType } from '@app/account';
 
 class CreateAccountParamsDto implements Partial<AccountParams> {
   @IsEnum(SavingAccountType)

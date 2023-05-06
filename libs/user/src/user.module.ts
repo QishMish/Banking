@@ -1,6 +1,8 @@
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Module } from '@nestjs/common';
+
 import { UtilsModule } from '@app/utils';
+
 import { UserService } from './services';
 import { UserEntity } from './entities';
 import { UserTypeOrmRepository } from './repositories';
@@ -12,9 +14,9 @@ import { USER_REPOSITORY } from './constants';
     UserService,
     {
       provide: USER_REPOSITORY,
-      useClass: UserTypeOrmRepository,
-    },
+      useClass: UserTypeOrmRepository
+    }
   ],
-  exports: [UserService, USER_REPOSITORY],
+  exports: [UserService, USER_REPOSITORY]
 })
 export class UserLibModule {}

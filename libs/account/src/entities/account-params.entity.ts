@@ -1,12 +1,6 @@
 import { Exclude } from 'class-transformer';
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+
 import { SavingAccountStatus, SavingAccountType } from '../types';
 import { AccountParamsModel } from '../interfaces';
 
@@ -18,7 +12,7 @@ class AccountParamsEntity implements AccountParamsModel {
   @Column({
     type: 'enum',
     enum: SavingAccountType,
-    default: SavingAccountType.FIXED_DEPOSIT,
+    default: SavingAccountType.FIXED_DEPOSIT
   })
   public type: SavingAccountType;
 
@@ -37,7 +31,7 @@ class AccountParamsEntity implements AccountParamsModel {
   @Column({
     type: 'enum',
     enum: SavingAccountStatus,
-    default: SavingAccountStatus.OPEN,
+    default: SavingAccountStatus.OPEN
   })
   public status: SavingAccountStatus;
 

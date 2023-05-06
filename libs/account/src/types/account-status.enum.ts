@@ -1,6 +1,6 @@
 enum AccountStatus {
   ACTIVE = 'ACTIVE',
-  INACTIVE = 'INACTIVE',
+  INACTIVE = 'INACTIVE'
 }
 
 export { AccountStatus };

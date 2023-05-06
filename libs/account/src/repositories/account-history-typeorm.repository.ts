@@ -1,16 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { AccountHistoryEntity } from '../entities';
 import { AccountHistoryRepository } from '../interfaces';
 
 @Injectable()
-export class AcountHistoryTypeormRepository
-  implements AccountHistoryRepository
-{
+export class AcountHistoryTypeormRepository implements AccountHistoryRepository {
   constructor(
     @InjectRepository(AccountHistoryEntity)
-    private readonly accountHistory: Repository<AccountHistoryEntity>,
+    private readonly accountHistory: Repository<AccountHistoryEntity>
   ) {}
 
   public async create(entity: unknown): Promise<AccountHistoryEntity> {

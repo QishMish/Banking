@@ -1,4 +1,5 @@
 import { BaseEntityInterface } from '@app/common';
+
 import { AccountModel } from './account.interface';
 import { AccountStatus } from '../types';
 

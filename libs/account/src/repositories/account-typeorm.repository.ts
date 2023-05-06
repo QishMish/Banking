@@ -1,37 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+
 import { GroupedResult } from '@app/common';
 import { PaginationResult } from '@app/utils';
+
 import { AccountEntity } from '../entities';
 import { AccountRepository, FindAccounts } from '../interfaces';
-import {
-  AccountTypeEnum,
-  SavingAccountStatus,
-  SavingAccountType,
-} from '../types';
+import { AccountTypeEnum, SavingAccountStatus, SavingAccountType } from '../types';
 
 @Injectable()
 export class AccountTypeOrmRepository implements AccountRepository {
   constructor(
     @InjectRepository(AccountEntity)
-    private readonly accountRepository: Repository<AccountEntity>,
+    private readonly accountRepository: Repository<AccountEntity>
   ) {}
-  public async getSavingAccounts(
-    type: SavingAccountType,
-  ): Promise<AccountEntity[]> {
+  public async getSavingAccounts(type: SavingAccountType): Promise<AccountEntity[]> {
     const curentDate = new Date().toISOString();
     const accounts = await this.accountRepository
       .createQueryBuilder('accounts')
       .leftJoinAndMapOne('accounts.params', 'accounts.params', 'params')
       .where('accounts."type" <= :type ', {
-        type: AccountTypeEnum.SAVING_ACCOUNT,
+        type: AccountTypeEnum.SAVING_ACCOUNT
       })
       .andWhere('params.type = :paramType ', {
-        paramType: type,
+        paramType: type
       })
       .andWhere('params.status = :status ', {
-        status: SavingAccountStatus.OPEN,
+        status: SavingAccountStatus.OPEN
       })
       .andWhere('params.nextInterestPayDate <= :curentDate', { curentDate })
       .getMany();
@@ -43,17 +39,13 @@ export class AccountTypeOrmRepository implements AccountRepository {
     return this.accountRepository.save(entity as AccountEntity);
   }
 
-  public find(
-    findManyOptions: Partial<AccountEntity>,
-  ): Promise<[] | AccountEntity[]> {
+  public find(findManyOptions: Partial<AccountEntity>): Promise<[] | AccountEntity[]> {
     return this.accountRepository.find({
-      where: findManyOptions,
+      where: findManyOptions
     });
   }
 
-  public async findAll(
-    options: FindAccounts,
-  ): Promise<PaginationResult<AccountEntity>> {
+  public async findAll(options: FindAccounts): Promise<PaginationResult<AccountEntity>> {
     const { id, page, pageSize, skip, limit, ...whereOptions } = options;
 
     const queryBuilder = this.accountRepository.createQueryBuilder('accounts');
@@ -67,7 +59,7 @@ export class AccountTypeOrmRepository implements AccountRepository {
     for (const [key, value] of Object.entries(whereOptions)) {
       if (value !== undefined) {
         queryBuilder.andWhere(`accounts.${key} = :${key}`, {
-          [key]: value,
+          [key]: value
         });
       }
     }
@@ -86,30 +78,25 @@ export class AccountTypeOrmRepository implements AccountRepository {
       pageSize,
       total: count,
       totalPages: count,
-      data: accounts,
+      data: accounts
     };
   }
 
-  public findOne(
-    findOneOptions: Partial<AccountEntity>,
-  ): Promise<AccountEntity> {
-    console.log(findOneOptions);
+  public findOne(findOneOptions: Partial<AccountEntity>): Promise<AccountEntity> {
     return this.accountRepository.findOne({
-      where: findOneOptions,
+      where: findOneOptions
     });
   }
 
   public findById(id: number): Promise<AccountEntity> {
     return this.accountRepository.findOne({
       where: {
-        id,
-      },
+        id
+      }
     });
   }
 
-  public findGroupedUserAccounts(
-    userId: number,
-  ): Promise<GroupedResult<AccountEntity>[]> {
+  public findGroupedUserAccounts(userId: number): Promise<GroupedResult<AccountEntity>[]> {
     return this.accountRepository
       .createQueryBuilder('account')
       .select('account.type')
@@ -126,10 +113,7 @@ export class AccountTypeOrmRepository implements AccountRepository {
       .getRawMany<GroupedResult<AccountEntity>[]>();
   }
 
-  public async updateById(
-    id: number,
-    entity: Partial<AccountEntity>,
-  ): Promise<AccountEntity> {
+  public async updateById(id: number, entity: Partial<AccountEntity>): Promise<AccountEntity> {
     const updatedEntity = await this.findById(id);
 
     for (const key in entity) {
@@ -142,14 +126,10 @@ export class AccountTypeOrmRepository implements AccountRepository {
   }
 
   public deleteById(id: number): Promise<boolean> {
-    return this.accountRepository
-      .delete({ id })
-      .then((result) => !!result.affected);
+    return this.accountRepository.delete({ id }).then((result) => !!result.affected);
   }
 
   public softDeleteById(id: number): Promise<boolean> {
-    return this.accountRepository
-      .softDelete({ id })
-      .then((result) => !!result.affected);
+    return this.accountRepository.softDelete({ id }).then((result) => !!result.affected);
   }
 }

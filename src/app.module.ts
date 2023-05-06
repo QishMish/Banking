@@ -1,20 +1,21 @@
 import * as Joi from '@hapi/joi';
 import { ClassSerializerInterceptor, Module } from '@nestjs/common';
 import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
-import { AuthModule } from './auth/auth.module';
-import { UserModule } from './user/user.module';
+import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { ConfigModule } from '@nestjs/config';
-import { AccountModule } from './account/account.module';
-import { HealthModule } from './health/health.module';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { LoggerModule } from '@app/logger';
 import { LogLevel, LoggingProvider } from '@app/logger';
 import { SchedulerLibModule } from '@app/scheduler';
-import { TransactionModule } from './transaction/transaction.module';
-import { APP_GUARD, APP_INTERCEPTOR } from '@nestjs/core';
 import { SeederModule } from '@app/seeder';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { dataSourceOptions } from '@app/common';
+
+import { TransactionModule } from './transaction/transaction.module';
 import { AdminModule } from './admin/admin.module';
+import { AuthModule } from './auth/auth.module';
+import { AccountModule } from './account/account.module';
+import { HealthModule } from './health/health.module';
 
 @Module({
   imports: [
@@ -32,17 +33,17 @@ import { AdminModule } from './admin/admin.module';
         JWT_REFRESH_TOKEN_SECRET: Joi.string().required(),
         JWT_REFRESH_TOKEN_EXPIRATION_TIME: Joi.string().required(),
         ECS_HOST: Joi.string().required(),
-        ECS_PORT: Joi.number().required(),
-      }),
+        ECS_PORT: Joi.number().required()
+      })
     }),
     LoggerModule.forRoot({
       serviceName: 'fintech',
       engine: LoggingProvider.WINSTON,
-      level: LogLevel.DEBUG,
+      level: LogLevel.DEBUG
     }),
     ThrottlerModule.forRoot({
       ttl: 60,
-      limit: 100,
+      limit: 100
     }),
     TypeOrmModule.forRoot(dataSourceOptions),
     HealthModule,
@@ -51,18 +52,18 @@ import { AdminModule } from './admin/admin.module';
     TransactionModule,
     SchedulerLibModule,
     SeederModule,
-    AdminModule,
+    AdminModule
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
-      useClass: ThrottlerGuard,
+      useClass: ThrottlerGuard
     },
     {
       provide: APP_INTERCEPTOR,
-      useClass: ClassSerializerInterceptor,
-    },
-  ],
+      useClass: ClassSerializerInterceptor
+    }
+  ]
 })
 export class AppModule {}

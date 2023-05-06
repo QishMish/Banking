@@ -1,18 +1,19 @@
 import { Inject, Injectable, NotFoundException } from '@nestjs/common';
-import { PaginationResult } from '@app/utils';
-import { PaginationService, builder } from '@app/utils';
+
+import { PaginationService, builder, PaginationResult } from '@app/utils';
+import { FindOptions } from '@app/common';
+
 import { FindUsers, UserRepository } from '../interfaces';
 import { User, UserModel } from '../interfaces';
 import { USER_REPOSITORY } from '../constants';
 import { UserStatuses } from '../types';
-import { FindOptions } from '@app/common';
 
 @Injectable()
 export class UserService {
   constructor(
     @Inject(USER_REPOSITORY)
     private readonly userRepository: UserRepository,
-    private readonly paginationService: PaginationService,
+    private readonly paginationService: PaginationService
   ) {}
 
   public create(user: User): Promise<UserModel> {
@@ -20,18 +21,10 @@ export class UserService {
   }
 
   public find(options?: FindUsers): Promise<PaginationResult<UserModel>> {
-    const {
-      id,
-      email,
-      role,
-      identityNumber,
-      page = 1,
-      pageSize = 15,
-      status,
-    } = options;
+    const { id, email, role, identityNumber, page = 1, pageSize = 15, status } = options;
     const { skip, limit } = this.paginationService.getPaginationProps({
       page,
-      pageSize,
+      pageSize
     });
     const findOptions = builder<FindUsers>(options)
       .id(id)
@@ -53,9 +46,7 @@ export class UserService {
     return user;
   }
 
-  public async findOne(
-    findOptions: FindOptions<UserModel>,
-  ): Promise<UserModel | never> {
+  public async findOne(findOptions: FindOptions<UserModel>): Promise<UserModel | never> {
     const user = await this.userRepository.findOne(findOptions);
 
     if (!user) throw new NotFoundException('User not found');
@@ -77,7 +68,7 @@ export class UserService {
   public removeRefreshToken(id: number): Promise<boolean> {
     return this.userRepository
       .updateById(id, {
-        refreshToken: null,
+        refreshToken: null
       })
       .then((result) => !!result);
   }
@@ -85,7 +76,7 @@ export class UserService {
   public checkEmailAvailability(email: string): Promise<boolean> {
     return this.userRepository
       .findOne({
-        email,
+        email
       })
       .then((result) => !result);
   }
@@ -99,8 +90,6 @@ export class UserService {
   }
 
   public updateStatus(id: number, status: UserStatuses): Promise<boolean> {
-    return this.userRepository
-      .updateById(id, { status })
-      .then((result) => !!result);
+    return this.userRepository.updateById(id, { status }).then((result) => !!result);
   }
 }

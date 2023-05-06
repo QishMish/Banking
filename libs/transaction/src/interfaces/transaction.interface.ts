@@ -2,6 +2,7 @@ import { AccountModel } from '@app/account';
 import { BaseEntityInterface } from '@app/common';
 import { PaginationProps } from '@app/utils';
 import { UserModel } from '@app/user';
+
 import { TransactionStatus, TransactionType } from '../types';
 
 interface FindTransactions extends PaginationProps {

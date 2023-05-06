@@ -1,4 +1,3 @@
-import { Role, UserModel, UserService } from '@app/user';
 import {
   Controller,
   Delete,
@@ -11,20 +10,19 @@ import {
   Query,
   UseGuards,
   UsePipes,
-  ValidationPipe,
+  ValidationPipe
 } from '@nestjs/common';
+import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
+import { Throttle } from '@nestjs/throttler';
+
+import { Role, UserModel, UserService } from '@app/user';
 import { JwtAuthGuard, Roles, RolesGuard } from '@app/auth';
 import { TransactionModel, TransactionService } from '@app/transaction';
-import { ApiTags, ApiBearerAuth } from '@nestjs/swagger';
 import { AccountModel, AccountService } from '@app/account';
-import {
-  FindAccountQuery,
-  FindTransactionsQuery,
-  FindUsersQuery,
-} from './dtos';
-import { PaginationResult } from '@app/utils/types';
-import { Throttle } from '@nestjs/throttler';
-import { AccountTransactionService } from '@app/account-transaction';
+import { PaginationResult } from '@app/utils';
+import { AccountTransactionService, ChangedTransactionStatus } from '@app/account-transaction';
+
+import { FindAccountQuery, FindTransactionsQuery, FindUsersQuery } from './dtos';
 
 @ApiTags('Admin')
 @ApiBearerAuth()
@@ -36,7 +34,7 @@ export class AdminController {
     private readonly userService: UserService,
     private readonly transactionService: TransactionService,
     private readonly accountService: AccountService,
-    private readonly accountTransactionService: AccountTransactionService,
+    private readonly accountTransactionService: AccountTransactionService
   ) {}
 
   @Get('/user')
@@ -44,9 +42,7 @@ export class AdminController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @HttpCode(HttpStatus.OK)
-  public findUsers(
-    @Query() query: FindUsersQuery,
-  ): Promise<PaginationResult<UserModel>> {
+  public findUsers(@Query() query: FindUsersQuery): Promise<PaginationResult<UserModel>> {
     return this.userService.find(query);
   }
 
@@ -64,9 +60,7 @@ export class AdminController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @HttpCode(HttpStatus.OK)
-  public deactivateUser(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<boolean> {
+  public deactivateUser(@Param('id', ParseIntPipe) id: number): Promise<boolean> {
     return this.userService.activate(id);
   }
 
@@ -91,9 +85,7 @@ export class AdminController {
   @Get('/accounts')
   @Throttle(20, 60)
   @HttpCode(HttpStatus.OK)
-  public findAccounts(
-    @Query() query: FindAccountQuery,
-  ): Promise<PaginationResult<AccountModel>> {
+  public findAccounts(@Query() query: FindAccountQuery): Promise<PaginationResult<AccountModel>> {
     return this.accountService.find(query);
   }
 
@@ -102,9 +94,7 @@ export class AdminController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @HttpCode(HttpStatus.OK)
-  public findOneAccount(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<AccountModel> {
+  public findOneAccount(@Param('id', ParseIntPipe) id: number): Promise<AccountModel> {
     return this.accountService.findById(id);
   }
 
@@ -113,9 +103,7 @@ export class AdminController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @HttpCode(HttpStatus.OK)
-  public async findTransactions(
-    @Query() findTransactionsQuery: FindTransactionsQuery,
-  ): Promise<PaginationResult<TransactionModel>> {
+  public async findTransactions(@Query() findTransactionsQuery: FindTransactionsQuery): Promise<PaginationResult<TransactionModel>> {
     return this.transactionService.find(findTransactionsQuery);
   }
 
@@ -124,9 +112,7 @@ export class AdminController {
   @Roles(Role.ADMIN)
   @UseGuards(RolesGuard)
   @HttpCode(HttpStatus.OK)
-  public async findTransaction(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<TransactionModel> {
+  public async findTransaction(@Param('id', ParseIntPipe) id: number): Promise<TransactionModel> {
     return this.transactionService.findById(id);
   }
 
@@ -135,9 +121,7 @@ export class AdminController {
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
-  public accept(
-    @Param('id', new ParseIntPipe()) id: number,
-  ): Promise<TransactionModel> {
+  public accept(@Param('id', new ParseIntPipe()) id: number): Promise<ChangedTransactionStatus> {
     return this.accountTransactionService.accept(id);
   }
 
@@ -146,9 +130,7 @@ export class AdminController {
   @UseGuards(RolesGuard)
   @Roles(Role.ADMIN)
   @HttpCode(HttpStatus.OK)
-  public decline(
-    @Param('id', new ParseIntPipe()) id: number,
-  ): Promise<TransactionModel> {
-    return this.transactionService.decline(id);
+  public decline(@Param('id', new ParseIntPipe()) id: number): Promise<ChangedTransactionStatus> {
+    return this.accountTransactionService.decline(id);
   }
 }
