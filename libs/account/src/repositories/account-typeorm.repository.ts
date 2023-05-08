@@ -15,6 +15,7 @@ export class AccountTypeOrmRepository implements AccountRepository {
     @InjectRepository(AccountEntity)
     private readonly accountRepository: Repository<AccountEntity>
   ) {}
+
   public async getSavingAccounts(type: SavingAccountType): Promise<AccountEntity[]> {
     const curentDate = new Date().toISOString();
     const accounts = await this.accountRepository

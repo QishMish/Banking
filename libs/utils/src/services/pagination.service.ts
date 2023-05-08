@@ -1,12 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { PaginationProps, PaginationResult, QueryResult } from "../types";
+import { Injectable } from '@nestjs/common';
+import { PaginationProps, PaginationResult, QueryResult } from '../types';
 
 @Injectable()
 export class PaginationService {
-  public paginate<T>(
-    queryResult: QueryResult<T>,
-    options: PaginationProps
-  ): PaginationResult<T> {
+  public paginate<T>(queryResult: QueryResult<T>, options: PaginationProps): PaginationResult<T> {
     const { data, total } = queryResult;
     const { page, pageSize } = options;
     const totalPages = Math.ceil(total / pageSize);
@@ -16,12 +13,12 @@ export class PaginationService {
       pageSize,
       total,
       totalPages,
-      data,
+      data
     };
   }
 
   public getPaginationProps = ({ page, pageSize }: PaginationProps) => ({
     skip: page === 1 ? 0 : (page - 1) * pageSize,
-    limit: pageSize,
+    limit: pageSize
   });
 }

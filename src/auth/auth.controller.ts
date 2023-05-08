@@ -21,7 +21,7 @@ import { AuthService, User, JwtAuthGuard } from '@app/auth';
 import { UserModel } from '@app/user';
 
 import { RequestWithUser } from './interfaces';
-import { SignInDto, SignUpDto } from './dtos';
+import { SignUpDto } from './dtos';
 
 @ApiTags('Auth')
 @Controller('auth')
@@ -60,7 +60,7 @@ export class AuthController {
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(AuthGuard('local'))
   @HttpCode(HttpStatus.OK)
-  public async signIn(@Body() signInUser: SignInDto, @Request() { user, res }: RequestWithUser<UserModel>): Promise<UserModel> {
+  public async signIn(@Request() { user, res }: RequestWithUser<UserModel>): Promise<UserModel> {
     const { id: userId, username, email } = user;
 
     const { cookie: accessTokenCookie } = await this.authService.generateJwtAccesTokenCookie({
@@ -78,7 +78,6 @@ export class AuthController {
     await this.authService.setRefreshToken(userId, refreshToken);
 
     res.setHeader('Set-Cookie', [accessTokenCookie, refreshTokenCookie]);
-
     return user;
   }
 

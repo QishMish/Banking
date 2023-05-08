@@ -13,14 +13,12 @@ export abstract class BaseTransaction<TransactionInput, TransactionOutput> {
     return this.connection.createQueryRunner();
   }
 
-  public async run(data: TransactionInput): Promise<TransactionOutput> {
+  public async run(data: TransactionInput, level = 'SERIALIZABLE' as any): Promise<TransactionOutput> {
     const queryRunner = await this.createRunner();
     await queryRunner.connect();
-    await queryRunner.startTransaction('SERIALIZABLE');
+    await queryRunner.startTransaction(level);
 
     try {
-      for await (const [key, value] of Object.entries(data)) {
-      }
       const result = await this.execute(data, queryRunner.manager);
 
       await queryRunner.commitTransaction();

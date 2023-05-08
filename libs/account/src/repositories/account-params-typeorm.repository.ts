@@ -30,7 +30,7 @@ export class AccountParamsTypeOrmRepository implements AccountParamsRepository {
     });
   }
 
-  findOne(findOptions: Partial<AccountParamsEntity>): Promise<AccountParamsEntity> {
+  public findOne(findOptions: Partial<AccountParamsEntity>): Promise<AccountParamsEntity> {
     return this.accountParamsRepository.findOne({
       where: findOptions
     });

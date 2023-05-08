@@ -12,42 +12,23 @@ export class SchedulerService {
     private readonly updateSavingAccountTransaction: UpdateSavingAccountsTransaction,
     private readonly logger: Logger
   ) {}
-  @Cron('*/10 * * * * *')
+  @Cron('*/30 * * * * *')
   public async savingAccountScheduler() {
     const accountsMap = new Map([
-      [SavingAccountType.TERM_DEPOSIT, undefined],
-      [SavingAccountType.FIXED_DEPOSIT, undefined]
+      [SavingAccountType.TERM_DEPOSIT, this.accountService.getSavingAccounts(SavingAccountType.TERM_DEPOSIT)],
+      [SavingAccountType.FIXED_DEPOSIT, this.accountService.getSavingAccounts(SavingAccountType.FIXED_DEPOSIT)]
     ]);
 
-    const promises = [
-      this.accountService.getSavingAccounts(SavingAccountType.TERM_DEPOSIT),
-      this.accountService.getSavingAccounts(SavingAccountType.FIXED_DEPOSIT)
-    ];
-
-    const accountsResult = await Promise.all(promises);
-
-    accountsResult.forEach((acc, index) => {
-      accountsMap.set(Array.from(accountsMap.keys())[index], acc);
-    });
-
-    this.logger.log(`Retrieved saving accounts: ${JSON.stringify(accountsResult)}`);
-
-    const activeAccountsPromise = [
-      this.updateSavingAccountTransaction.run({
-        accounts: accountsMap.get(SavingAccountType.FIXED_DEPOSIT),
-        type: SavingAccountType.FIXED_DEPOSIT
-      }),
-      this.updateSavingAccountTransaction.run({
-        accounts: accountsMap.get(SavingAccountType.TERM_DEPOSIT),
-        type: SavingAccountType.TERM_DEPOSIT
-      })
-    ];
-
-    for await (const promise of activeAccountsPromise) {
-      await promise;
+    for await (const [key, value] of accountsMap) {
+      this.logger.log(`Retrieved ${key}: ${JSON.stringify(value)}`);
+      const accounts = await value;
+      console.log(key, accounts);
+      await this.updateSavingAccountTransaction.run({
+        accounts: accounts,
+        type: key
+      });
+      this.logger.log(`${key} updated:  ${JSON.stringify(value)}`);
     }
-
-    this.logger.log(`Saving accounts updated:  ${JSON.stringify(accountsResult)}`);
 
     return void 0;
   }

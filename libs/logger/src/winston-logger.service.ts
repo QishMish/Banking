@@ -1,5 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { createLogger, format, transports, Logger as WinstonLogger } from 'winston';
+import { Logtail } from '@logtail/node';
+import { LogtailTransport } from '@logtail/winston';
 
 import { LogLevelOptions } from './types';
 import { Logger } from './interfaces';
@@ -7,7 +9,7 @@ import { Logger } from './interfaces';
 export class WinstonLoggerService implements Logger {
   private logger: WinstonLogger;
   private level: string;
-  // private logtail = new Logtail('imkzdZP5M5RG786FJRjr5xYt');
+  private logtail = new Logtail(process.env.LOGTAIL_TOKEN);
 
   constructor({ level, serviceName }: LogLevelOptions) {
     this.level = level;
@@ -19,8 +21,8 @@ export class WinstonLoggerService implements Logger {
       transports: [
         new transports.Console({
           format: format.simple()
-        })
-        // new LogtailTransport(this.logtail)
+        }),
+        new LogtailTransport(this.logtail)
       ]
     });
   }

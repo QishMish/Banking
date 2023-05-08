@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  Index,
   JoinColumn,
   ManyToOne,
   OneToMany,
@@ -25,6 +26,7 @@ class AccountEntity implements AccountModel {
   @PrimaryGeneratedColumn()
   public id: number;
 
+  @Index()
   @Column({ type: 'varchar', nullable: false })
   public iban: string;
 
